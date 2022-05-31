@@ -1,0 +1,17 @@
+div.container{
+    align-items: center;
+    padding-left: 135px;
+    padding-right: 135px;
+    padding-top: 25px;
+    line-height: 1.5;
+    font-size: medium;
+    display: flex;
+
+}
+.form-group{
+    padding-top :20px;
+    display: flex;
+}
+#fg{
+    display: inline;
+}

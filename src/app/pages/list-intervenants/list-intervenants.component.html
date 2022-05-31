@@ -1,0 +1,49 @@
+<div class="container" dir="rtl">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+    <h2 class="h">قائمة الهياكل</h2>
+    <table class="table table -success table-striped">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">الإسم</th>
+          <th scope="col">العنوان الالكتروني</th>
+          <th scope="col">العنوان</th>
+          <th scope="col">رقم الهاتف</th>
+          <th scope="col">الفاكس</th>
+          <th scope="col">الإدارة</th>
+          <th scope="col">الصنف</th>
+          <th scope="col"> <button class="btn btn-success"  routerLink="/AjoutIntervenant">إضافة هيكل</button></th>
+          
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let f of intervenants" class="tr">
+          <td>{{f.idIntervenant}}</td>  
+       <td>{{f.nomIntervenant}}</td>
+       <td>{{f.email}}</td>
+       <td>{{f.adresse}}</td>
+       <td>{{f.num_tel}}</td>
+       <td>{{f.fax}}</td>
+       <td>{{f.administration}}</td>
+       <td>{{f.type}}</td>
+      
+       <td>
+        <button mat-button class="menu-button" routerLink="/UpdateIntervenant/{{f.idIntervenant}}" >
+        	<mat-icon>edit</mat-icon>
+          </button>
+          <button mat-button class="menu-button"(click)="supprimerFournisseur(f)" color="warn" >
+            <mat-icon>delete</mat-icon>
+            </button>
+           
+      </td>
+       
+        </tr>
+      </tbody>
+  
+    </table>
+    </div>
+    </div>
+  </div>
+

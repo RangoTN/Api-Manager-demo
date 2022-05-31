@@ -1,0 +1,259 @@
+<div class="container">
+  <div class="card shadow mb-3">
+    <div class="card-body">
+      <h3 class="card-header text-center ">API إضافة </h3>
+      <div *ngIf="alert" class="alert alert-success alert-dismissible fade show" role="alert" dir="rtl">
+        <strong>تمت عملية الإضافة بنجاح</strong>
+        <button type="button" (click)="closeAlert()" class="btn-close" data-bs-dismiss="alert"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" dir="rtl" #localForm="ngForm" id="f">
+        
+        <div class="form-group">
+        <div class="form-row"id="fg">
+          <div class="col-md-4">
+            <label for="nomApi">الإسم*:</label>
+            <input type="text" class="form-control" id="nomApi" [(ngModel)]="api.nomApi" formControlName="nomApi"
+              [ngClass]="{'is-invalid':submitted && form.controls.nomApi.errors}">
+          </div>
+          <div class="col-md-4">
+            <label for="nomApi">الحالة*:</label>
+            <select (change)="selectEtat($event)" [(ngModel)]="selectedEtat" formControlName="etat"
+              [ngClass]="{'is-invalid': submitted && form.controls.etat.errors}">
+              <option>اختيار الحالة</option>
+              <option *ngFor="let t of etats">
+                {{t.libelleEtat}}
+              </option>
+            </select>
+             <div *ngIf="submitted && form.controls.etat.errors" class="invalid-feedback">
+                <div *ngIf="form.controls.etat.errors.required">الرجاء إختيار حالة !!</div>
+              </div>
+          </div>
+          <div class="col-md-4">
+            <label for="type">*النوع: </label>
+            <select (change)="selectType($event)" [(ngModel)]="selectedType" formControlName="type"
+              [ngClass]="{'is-invalid': submitted && form.controls.type.errors}">
+              <option>اختيار نوع API</option>
+              <option *ngFor="let t of types">
+                {{t.name}}
+              </option>
+            </select>
+            <div *ngIf="submitted && form.controls.type.errors" class="invalid-feedback">
+              <div *ngIf="form.controls.type.errors.required">الرجاء إختيار النوع !!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-4">
+            <label for="version">*الإصدار: </label>
+            <input type="text" class="form-control" id="version" [(ngModel)]="api.version" formControlName="version"
+            [ngClass]="{'is-invalid':submitted && form.controls.version.errors}">
+          </div>
+          <div class="col-md-4">
+            <label for="dateVersion"> تاريخ الاصدار :</label>
+            <input type="date" class="form-control" id="dateVersion" required [(ngModel)]="DateSelected"
+              (Change)=" fetchDate($event)" formControlName="dateVersion"
+              [ngClass]="{'is-invalid':submitted && form.controls.dateVersion.errors}">
+          </div>
+          <div class="col-md-2 form-check">
+            <input class="form-check-input" type="checkbox" id="isDefault" (change)="checked($event)">
+            <label class="form-check-label" for="isDefault">الإصدار الأصلي ؟؟</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-6">
+            <label for="fournisseur">*المزود: </label>
+            <select (change)="selectFournisseur($event)" [(ngModel)]="selectedFournisseur" formControlName="fournisseur"
+              [ngClass]="{'is-invalid': submitted && form.controls.fournisseur.errors}">
+              <option>اختيار المزود</option>
+              <option *ngFor="let t of fournisseurs">
+                {{t.nomIntervenant}}
+              </option>
+            </select>
+            <div *ngIf="submitted && form.controls.fournisseur.errors" class="invalid-feedback">
+              <div *ngIf="form.controls.fournisseur.errors.required">الرجاء إختيار المزود!!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-6"><label for="categorie">الفئة: </label>
+            <input type="text" class="form-control" id="categorie" [(ngModel)]="api.nomCategorie"
+              formControlName="categorie">
+          </div>
+          <div class="col-md-6"><label for="tags">العلامات: </label>
+            <input type="text" class="form-control" id="tags" [(ngModel)]="api.tags" formControlName="tags">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-4"><label for="url">URLعنوان: </label>
+            <input type="text" class="form-control" id="url" required [(ngModel)]="api.url" formControlName="url"
+              [ngClass]="{'is-invalid':submitted && form.controls.url.errors}">
+          </div>
+          <div class="col-md-6">
+            <div class="form-group form-check form-check-inline" *ngFor="let r of listResources">
+              <div><input type="checkbox" name="{{r.value}}" (change)="onChange($event)"></div>
+              <div><label>{{r.name}}</label></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-6">
+            <label for="name">الصورة: </label>
+            <input type="file" class="form-control" id="image" required [(ngModel)]="api.image" name="image">
+
+          </div>
+          <div class="col-md-6">
+            <label for="name">ملفات مرفقة: </label>
+            <input type="file" class="form-control" (change)="save($event)" multiple="multiple">
+          </div>
+        </div>
+      </div>
+        <div class="form-group">
+          <button class="btn btn-success" type="submit">إضافة</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--<div class="form-group">
+          <div class="row">
+            <div class="col-md-5" ><label for="nomApi"><span>*الاسم: </span>
+              <input type="text" class="form-control" id="nomApi" [(ngModel)]="api.nomApi" formControlName="nomApi"
+              [ngClass]="{'is-invalid':submitted && form.controls.nomApi.errors}">
+
+            </label>
+        
+            </div>
+
+            <div class="col-md-4">
+              <label for="etat">*الحالة: </label>
+              <select (change)="selectEtat($event)" [(ngModel)]="selectedEtat" formControlName="etat"
+                [ngClass]="{'is-invalid': submitted && form.controls.etat.errors}">
+                <option>select Type</option>
+                <option *ngFor="let t of etats">
+                  {{t.libelleEtat}}
+                </option>
+              </select>
+              <div *ngIf="submitted && form.controls.etat.errors" class="invalid-feedback">
+                <div *ngIf="form.controls.etat.errors.required">الرجاء إختيار حالة !!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+          <div >
+            <label for="fournisseur">*المزود: </label>
+            <select (change)="selectFournisseur($event)" [(ngModel)]="selectedFournisseur" formControlName="fournisseur"
+              [ngClass]="{'is-invalid': submitted && form.controls.fournisseur.errors}">
+              <option>select Type</option>
+              <option *ngFor="let t of fournisseurs">
+                {{t.nomIntervenant}}
+              </option>
+            </select>
+            <div *ngIf="submitted && form.controls.fournisseur.errors" class="invalid-feedback">
+              <div *ngIf="form.controls.fournisseur.errors.required">الرجاء إختيار المزود!!</div>
+            </div>
+          </div>
+          <div >
+            <label for="type">*النوع: </label>
+            <select (change)="selectType($event)" [(ngModel)]="selectedType" formControlName="type"
+              [ngClass]="{'is-invalid': submitted && form.controls.type.errors}">
+              <option>select Type</option>
+              <option *ngFor="let t of types">
+                {{t.name}}
+              </option>
+            </select>
+            <div *ngIf="submitted && form.controls.type.errors" class="invalid-feedback">
+              <div *ngIf="form.controls.type.errors.required">الرجاء إختيار النوع !!</div>
+            </div>
+          </div>
+
+        </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-4"><label for="version">*الإصدار: </label>
+            <input type="text" class="form-control" id="version" [(ngModel)]="api.version" formControlName="version"
+              [ngClass]="{'is-invalid':submitted && form.controls.version.errors}">
+          </div>
+          <div class="col-md-4">
+            <label>
+              تاريخ الاصدار :
+            </label>
+            <input type="date" class="form-control" id="dateVersion" required [(ngModel)]="DateSelected"
+              (Change)=" fetchDate($event)" formControlName="dateVersion"
+              [ngClass]="{'is-invalid':submitted && form.controls.dateVersion.errors}">
+
+          </div>
+          <div class="col-md-2">
+            <label for="isDefault">
+              الإصدار الأصلي :
+            </label>
+            <input type="checkbox" class="form-control" id="isDefault" (change)="checked($event)">
+          </div>
+
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="name">الصورة: </label>
+            <input type="file" class="form-control" id="image" required [(ngModel)]="api.image" name="image">
+          </div>
+          <div class="col-md-6">
+            <label for="name">ملفات مرفقة: </label>
+            <input type="file" class="form-control" (change)="save($event)" multiple="multiple">
+          </div>
+        </div>
+
+
+       
+        <div class="row">
+          <div class="col-md-6"><label for="url">URLعنوان: </label>
+            <input type="text" class="form-control" id="url" required [(ngModel)]="api.url" formControlName="url"
+              [ngClass]="{'is-invalid':submitted && form.controls.url.errors}">
+          </div>
+        </div>
+        <div class="row">
+          <fieldset>
+            <legend>المصادر:</legend>
+            <div class="form-group form-check form-check-inline" *ngFor="let r of listResources">
+              <div><input type="checkbox" name="{{r.value}}" (change)="onChange($event)"></div>
+              <div><label>{{r.name}}</label></div>
+            </div>
+          </fieldset>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-6"><label for="categorie">الفئة: </label>
+            <input type="text" class="form-control" id="categorie" [(ngModel)]="api.nomCategorie"
+              formControlName="categorie">
+          </div>
+          <div class="col-md-6"><label for="tags">العلامات: </label>
+            <input type="text" class="form-control" id="tags" [(ngModel)]="api.tags" formControlName="tags">
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="description">تفاصيل: </label>
+          <textarea type="text" class="form-control" id="description" required [(ngModel)]="api.description"
+            formControlName="description"></textarea>
+
+        </div>
+        <div class="form-group">
+          <button class="btn btn-success" type="submit">إضافة</button>
+        </div>-->

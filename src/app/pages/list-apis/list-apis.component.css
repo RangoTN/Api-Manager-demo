@@ -1,0 +1,37 @@
+div {
+    padding: 50px;
+    font-size: medium;
+}
+div .h{
+    text-align: center;
+    
+}
+#p{
+    position: left;
+}
+div .table-striped{
+    border: 1px  ;
+}
+div .table-striped > tbody > tr > td {
+    border: 1px ;
+}
+div .mat-table {
+    text-decoration: blue;
+    font-size: medium;
+} 
+.primary-color{
+    color: green;
+}
+.mat-table{
+    background-color: whitesmoke;
+   text-decoration: blanchedalmond;
+}
+div .btn{
+    align-items: center;
+}
+.mat-cell{
+    color:black;
+}
+.mat-header-cell{
+    color:brown;
+}
